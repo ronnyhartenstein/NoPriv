@@ -787,8 +787,14 @@ def backup_mails_to_html_from_local_maildir(folder):
 
         mail = sorted_maildir[number]
         mail_for_page = sorted_maildir[number]
-        mail_subject = decode_header(mail.get('Subject'))[0][0]
-        mail_subject_encoding = decode_header(mail.get('Subject'))[0][1]
+
+        try:
+          mail_subject = decode_header(mail.get('Subject'))[0][0]
+          mail_subject_encoding = decode_header(mail.get('Subject'))[0][1]
+        except HeaderParseError:
+          mail_subject = "(No Subject)"
+          mail_subject_encoding = "utf-8"
+
         if not mail_subject_encoding:
             mail_subject_encoding = "utf-8"
 
